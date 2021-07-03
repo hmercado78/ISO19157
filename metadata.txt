@@ -1,0 +1,47 @@
+# This file contains metadata for your plugin.
+
+# This file should be included when you package your plugin.# Mandatory items:
+
+[general]
+name=ISO 19157
+qgisMinimumVersion=3.16
+description=Application of the ISO 19157 standard on the BTN25 of the CNIG (Aplicación de la norma ISO 19157 sobre la BTN25 del CNIG)
+version=0.1
+author=Harold Mercado LLanos
+email=hmercado78@hotmail.com
+
+about=This plugin is developed for the implementation of the ISO 19157 standard, for the evaluation of the quality of geographic data presented in the cartography of the CNIG's BTN25. (Este complemento se desarrolla para la implementación de la norma ISO 19157, para la evaluación de calidad de datos geográficos presentados en la cartografía de la BTN25 del CNIG).
+
+tracker=http://bugs
+repository=https://github.com/hmercado78
+# End of mandatory metadata
+
+# Recommended items:
+
+hasProcessingProvider=no
+# Uncomment the following line and add your changelog:
+# changelog=
+
+# Tags are comma separated with spaces allowed
+tags=ISO,19157,quality,cartography
+
+homepage=http://homepage
+category=Vector
+icon=icon.png
+# experimental flag
+experimental=False
+
+# deprecated flag (applies to the whole plugin, not just a single version)
+deprecated=False
+
+# Since QGIS 3.8, a comma separated list of plugins to be installed
+# (or upgraded) can be specified.
+# Check the documentation for more information.
+# plugin_dependencies=
+
+Category of the plugin: Raster, Vector, Database or Web
+# category=
+
+# If the plugin can run on QGIS Server.
+server=False
+
