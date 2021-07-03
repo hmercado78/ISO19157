@@ -13,7 +13,7 @@ email=hmercado78@hotmail.com
 about=This plugin is developed for the implementation of the ISO 19157 standard, for the evaluation of the quality of geographic data presented in the cartography of the CNIG's BTN25. (Este complemento se desarrolla para la implementación de la norma ISO 19157, para la evaluación de calidad de datos geográficos presentados en la cartografía de la BTN25 del CNIG).
 
 tracker=http://bugs
-repository=https://github.com/hmercado78
+repository=https://github.com/hmercado78/ISO19157
 # End of mandatory metadata
 
 # Recommended items:
