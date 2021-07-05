@@ -121,6 +121,11 @@ class ISO19157Dialog(QDialog, FORM_CLASS):
         self.tabWidget.setTabEnabled(2,False)  
         self.tabWidget.setTabEnabled(3,False) 
         self.tabWidget.setTabEnabled(4,False)
+        self.bt_validar.setEnabled(False)
+        self.bp_cdr.setEnabled(False)
+        self.tb_conj_datos.clear()
+        self.cb_cde.clear()
+        self.rel_val.clear()
 
         dialogo = QFileDialog(self)
         fic_nuevo = dialogo.getExistingDirectory(self, 'Seleccione Directorio')
@@ -137,13 +142,13 @@ class ISO19157Dialog(QDialog, FORM_CLASS):
                     self.tabWidget.setTabEnabled(1,False)
                 else:
                     self.label_6.setText("<font style='color:#00B000'><b>Es Directorio valido, continue a la pestaña Conjunto de datos</b></font>")
-                    fic = open(fic_nuevo+'/iso19157.txt','a')
+                    fic = open(fic_nuevo+'/Iso19157.txt','a')
                     fic.close()
                     now = datetime.now()
                     hoy = now.strftime('%Y/%m/%d %H:%M')
                     fic = open(fic_nuevo+'/Registro.txt','a')
                     fic.write('Plugin ISO 19157'+'\n'+'Creación de proyecto de evaluación: '+str(hoy)+'\n')
-                    fic.write('Ubicación de proyecto: '+str(fic_nuevo)+'/iso19157.txt'+'\n')
+                    fic.write('Ubicación de proyecto: '+str(fic_nuevo)+'/Iso19157.txt'+'\n')
                     fic.close()
                     cde = open(fic_nuevo+'/cde.txt',"a+")
                     cde.close()
@@ -162,6 +167,8 @@ class ISO19157Dialog(QDialog, FORM_CLASS):
         self.tabWidget.setTabEnabled(2,False)  
         self.tabWidget.setTabEnabled(3,False) 
         self.tabWidget.setTabEnabled(4,False)
+        self.bt_validar.setEnabled(False)
+        self.bp_cdr.setEnabled(False)
         dialogo = QFileDialog(self)
 
 
@@ -217,12 +224,6 @@ class ISO19157Dialog(QDialog, FORM_CLASS):
         if self.bt_cons.isChecked():
             self.bt_cons.clicked.connect(self.limpiar)
     
-        iso_archivo = str(ruta)+'/Iso19157.txt'
-        if os.stat(iso_archivo).st_size == 0:
-            self.tb_conj_datos.clear()
-            self.cb_cde.clear()
-            self.rel_val.clear()
-
         cde = str(ruta)+'/cde.txt'
         if os.stat(cde).st_size != 0:
             f = open (cde, 'r')
@@ -247,6 +248,8 @@ class ISO19157Dialog(QDialog, FORM_CLASS):
             self.tb_conj_datos.setColumnWidth(1,200)
             self.tb_conj_datos.resizeColumnToContents(2)
 
+            self.bt_validar.setEnabled(True)
+            self.bp_cdr.setEnabled(True)
 
             fila = 0
             for registro in lista_cde:
@@ -278,6 +281,28 @@ class ISO19157Dialog(QDialog, FORM_CLASS):
 
             self.cb_cde.clear()
             self.cb_cde.addItems(list(lista_cde))
+
+            iso_archivo = str(ruta)+'/Iso19157.txt'
+            if os.stat(iso_archivo).st_size == 0:
+                f = open (iso_archivo, 'w')
+                linea = "CDE,CDR,COMP,CONS,POSI,TEMP,TEMA,USAB\n"
+                f.write(linea)
+                for x in range(len(lista_cde)):
+                    indice = (lista_cde[x].rfind('shp,'))-3
+                    registro_cde = lista_cde[x][:indice]
+                    indice = (registro_cde.rfind('/'))+1
+                    n_cde = registro_cde[indice:]
+                    if lista_cdr[x]=="-":
+                        n_cdr=""
+                    else:
+                        indice = (lista_cdr[x].rfind('shp,'))-3
+                        registro_cdr = lista_cdr[x][:indice]
+                        indice = (registro_cdr.rfind('/'))+1
+                        n_cdr = registro_cdr[indice:]                    
+                    linea = f"{n_cde},{n_cdr},False,False,False,False,False,False\n"
+                    f.write(linea)
+                f.close()
+
 
 # Funcion para eliminar un conjunto de datos, este se activa al hacer click en el TableWidget y elimina la fila seleccionada.
     def elimina_cd(self,fila,columna):
@@ -330,13 +355,6 @@ class ISO19157Dialog(QDialog, FORM_CLASS):
             self.act_tabla_cd()
 
         else:
-            iso_archivo = str(ruta)+'/Iso19157.txt'
-            fic = open(iso_archivo,'a')
-            indice = str(obj[0]).rfind('/')
-            nom_arc = str(obj[0])[indice:-3]
-            fic.write(nom_arc + ',,False,False,False,False,False,False\n')
-            fic.close()
-
             cde = str(ruta)+'/cde.txt'
             if os.stat(cde).st_size == 0:
                 f = open(cde,'w') 
@@ -350,15 +368,16 @@ class ISO19157Dialog(QDialog, FORM_CLASS):
                 fic.close()
                 self.label_8.setText("<font style='color:#00B000'><b>Se cargo con exito el nuevo Conjunto de Datos</b></font>")
                 self.act_tabla_cd()                               
+
             else:
                 f = open (cde, 'r')
                 cont = pd.read_csv(f)
                 f.close()
-
                 lista = cont['CDE'].tolist()
 
                 if str(obj[0]) in lista:
                     self.label_8.setText("<font style='color:#FF0000'><b>Ya esta cargado este Conjunto de Datos</b></font>")
+                    self.act_tabla_cd()                               
                 else:
                     s = open (cde, "a")
                     s.write(str(obj[0])+",-\n")
@@ -369,6 +388,17 @@ class ISO19157Dialog(QDialog, FORM_CLASS):
                     fic.write('Se adicionó el conjunto de datos: ' + str(obj[0]) + ' al proyecto ' + str(hoy)+'\n')
                     fic.close()
                     self.label_8.setText("<font style='color:#00B000'><b>Se cargo con exito el nuevo Conjunto de Datos</b></font")
+
+                    iso_archivo = str(ruta)+'/Iso19157.txt'
+                    f = open(iso_archivo, 'a+')
+                    indice = (str(obj[0]).rfind('shp,'))-3
+                    registro_cde = str(obj[0])[:indice]
+                    indice = (registro_cde.rfind('/'))+1
+                    n_cde = registro_cde[indice:]
+                    linea = f"{n_cde},,False,False,False,False,False,False\n"
+                    f.write(linea)
+                    f.close()
+
                     self.act_tabla_cd()
 
         self.tabWidget.setTabEnabled(2,False)             
@@ -378,8 +408,11 @@ class ISO19157Dialog(QDialog, FORM_CLASS):
 #Funcion que asocia un CDR a un CDE seleccionado por el usuario desde la lista.
     def asociar_cdr(self):
         #print(self.sender().objectName())
+
         dialogo = QFileDialog(self)
         obj = dialogo.getOpenFileName(self, 'Seleccione Archivo Shape', '', "Shape (*.shp)")
+
+
         if obj[0]=="":
             self.act_tabla_cd()
 
@@ -463,6 +496,7 @@ class ISO19157Dialog(QDialog, FORM_CLASS):
         dato =""
         global con_reproy 
         con_reproy= list()
+
         for i in range(len(lista_cde)):
             conteo=i+1
             grupo = "Conj_Datos_"+str(conteo)
