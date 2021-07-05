@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Ayudas</title>
+	<meta charset="utf-8" />
+	<meta name="Ayudas" content="Datos Geográficos, ISO 19157">
+	<link rel="stylesheet" href="estilos.css" />
+	<link rel="shortcut icon" href="../icon.png" />
+</head>
+<body>
+    <header>
+       <div id="enlinea"><h3>ISO 19157</h3>
+       <h5>Aplicación de la norma ISO 19157 en la cartografía de la BTN25 del CNIG</h5></div>
+       <img src="imagen/QGis_Logo.png" class="logo"/>
+    </header>
+    <section>
+        <h3>ISO 19157</h3>
+        <h4> Aplicación de la norma ISO 19157 en la cartografía BTN25 de CNIG </h4>
+        <p class="pie">Harold Mercado Llanos</p>
+        <p class="pie">QGIS plugin</p>
+        <br>
+        <a name="resumen"></a>
+        <h3>Resumen</h3>
+        <p>La información geográfica es hoy más accesible para los usuarios, contamos con múltiples fuentes y productores, lo que permite que la sociedad tengo muchos datos disponibles, pero no siempre la información es adecuada para una finalidad específica, he aquí la importancia de las herramientas para la evaluación de calidad que deben ser igualmente divulgadas y de fácil acceso, para que la implementación de las normas y estándares, aporten al usuario una valoración sobre la confianza que puede tener sobre el producto cartográfico y que sea una herramienta que le permita estimar la usabilidad (adecuación al uso) y comparar si lo indicado por el productor está conforme a la calidad esperada del conjunto de datos y así pueda tomar mejores decisiones al conocer las fortalezas y debilidades de la información.</p><br>
+        <p>En la actualidad el modelo para la evaluación de la calidad de datos geográficos más extendido y que se encuentra vigente es el establecido por la norma <b>ISO 19157</b>, que a pesar del manto de dudas que pueda surgir o las recomendaciones que se quieran aportar, esta norma propone un conjunto de medidas normalizadas de calidad y los procesos básicos de evaluación que son herramientas útiles para obtener medidas cualitativas y cuantitativas sobre el conjunto de datos geográficos.</p><br> 
+		<p>Como aporte a la discusión, este trabajo pretenden automatizar lo expuesto en la norma <b>ISO 19157</b>, creando una herramienta guiada, estructurada y de carácter gratuito, que recopila los conceptos básicos de la norma, con especial atención a las medidas y métodos definidos en esta, luego se aplica esta herramienta sobre la cartografía oficial del Instituto geográfico Nacional <b>(IGN)</b> de España, para los mapas vectoriales y Bases Cartográficas y Topográficas de la <b>BTN25</b>, donde necesariamente debemos conocer las especificaciones del producto para identificar la estructura y características de los datos geográficos que ofrecen a los usuarios.</p><br>
+		<p>La herramienta permite la evaluación de la consistencia lógica, donde se evalúa la consistencia conceptual, la consistencia de formato, la consistencia de dominio y la consistencia topológica, se evalua la compleción (comisión y omisión), la exactitud posicional, la exactitud temporal y la usabilidad, generando para cada una de las evaluaciones un reporte de los resultados asociados a las medidas recomendadas por la norma ISO 19157 en el <b>anexo D.</b></p><br>
+		<p>Esta creada como un complemento (plugin) para <b>Qgis</b>, donde el usuario, mediante la interfase grafica podrá cargar, seleccionar y configurar los datos sobre los que se desea implementar la evaluación y cuenta con ventanas de ayuda para comprender los pasos requeridos en la evaluación de todo el conjunto de datos de una hoja de la BTN25.</p><br>
+		
+		<a name="descripcion"></a>
+		<h3>Descripción del plugin</h3>
+		<p> El plugin de Qgis sigue el siguiente esquema de desarrollo:</p><br>
+		<p><a href= "imagen/inicio.jpeg" target="_blank" onclick="afoto('imagen/inicio.jpeg','Esquema de desarrollo');return false" > 
+			<img src="imagen/inicio.jpeg" alt="Esquema de desarrollo" width="50%" /></a></p><br>
+		<p>Se hace una descripción de las diferentes pestañas con las que cuenta el plugin.</p>
+		
+		<a name="menu_ini"></a>
+		<h4>Menu inicial:</h4><br> 
+		<p><img src="imagen/menu_ini.jpg" alt="menu inicial" width="50%" /></p>
+			<p class="parrafo"><h5>Proyecto nuevo:</h5></p>
+			<p class="parrafo">El plugin requiere una carpeta vacía para crear el proyecto de evaluación de calidad, el sistema verifica esta condición y genera los archivos requeridos en la ubicación local indicada por el usuario. al iniciar un nuevo proyecto el plugin genera los siguientes archivos y directorios:</p>
+			<p class="parrafo"><img src="imagen/carpetas.jpg" alt="carpetas" width="15%" /></p>
+			<p class="parrafo">Directorio <b>CD</b> donde se almacenan las <b>CDR</b> que deben ser reproyectados.</p>
+			<p class="parrafo">Directorio <b>Resultados</b> donde se almacenan los resultados de las evaluaciones de calidad en formato <b>HTML</b>.</p>
+			<p class="parrafo">Fichero <b>cde.txt</b> Archivo plano donde se relacionan las ubicaciones de los <b>CDE</b> y <b>CDR</b> cargados en el plugin.</p>
+			<p class="parrafo">Fichero <b>iso19157.qgs</b> Archivo de proyecto <b>QGIS</b> para la interface de la cartografía, los geoprocesos y la visualización de resultados.</p> 
+			<p class="parrafo">Fichero <b>Iso19157.txt</b> Archivo de configuración del proyecto.</p>
+			<p class="parrafo">Se puede cambiar la ubicación de la carpeta completa del proyecto, pero no se recomienda la manipulación de los archivos o carpetas internas dado que puede llegar a generar perdida de información y errores en el comportamiento del plugin.</p>
+			<p class="parrafo">Se recomienda no cambiar la ubicación de los conjuntos de datos <b>CDE</b> y <b>CDR</b>, esto genera que el plugin no puede volver a localizar los datos de entrada.</p>  
+			 
+			<p class="parrafo"><h5>Proyecto existente:</h5></p> 
+			<p class="parrafo">En el caso que ya se tenga iniciado un proyecto de evaluación, el plugin verifica que en la carpeta indicada por el usuario existan los archivos correspondientes a dicho proyecto. Adicionalmente si ya ha realizado alguna evaluación sobre el conjunto de datos se habilita la pestaña <b>Resultados</b> donde encontrará los enlaces correspondientes.</p>
+		<p>Si se crea un nuevo proyecto o se cargue un proyecto existente de manera satisactoria se genera el mensaje <b><i>"Puede continuar o revisar el resultado de la evaluación"</i></b>, en este caso se puede pasar a la pestaña <b><i>"Conjunto de Datos"</i></b></p><br>
+
+		<a name="conjunto"></a>
+		<h4>Conjunto de datos:</h4><br>
+		<p><img src="imagen/menu_cd.jpg" alt="Conjunto de datos" width="50%" /></p>
+		<h5>Adicionar objeto:</h5> 
+			<p class="parrafo">Permite al usuario localizar en los directorios locales el conjunto de datos a evaluar <b>CDE</b>, solo acepta formato SHP.</p>
+		<h5>Seleccione Conjunto de Datos Evaluación (CDE):</h5> 
+			<p class="parrafo">Permite seleccionar mediante un menu desplegable el <b>CDE</b> al que se le desea asociar un conjunto de datos de referencia <b>CDR</b></p>
+		<h5>Asociar CDR:</h5> 
+			<p class="parrafo">Una vez seleccionado el <b>CDE</b> en el menu desplegable, esta opción permite ubicar el archivo <b>CDR</b> en el directorio local, solo acepta formato SHP</p>
+		<h5>Eliminar un CDE cargado:</h5> 
+			<p class="parrafo">Dando click sobre la fila del <b>CDE</b> se elimina el conjunto de datos de la evaluación</p>
+		<h5>Validar CD</h5> 
+			<p class="parrafo">se valida que el <b>CDE</b> y <b>CDR</b> esten en el mismo sistema de coordenadas, que compartan la misma cobertura espacial y que tengan la misma topología, el resultado de esta validación se presenta en la pestaña <b>"Validar CD"</b></p><br>
+
+		<a name="validar"></a>
+		<h4>Validar CD:</h4><br>
+		<p><img src="imagen/menu_val.jpg" alt="Validar CD" width="50%" /></p>
+		<p>Se presenta el resultado de la validación del <b>CDE</b> y <b>CDR</b> se indica el numero de elementos cargados.</p><br>
+		<h5>Sistema de coordenadas de referencia:</h5> 
+			<p class="parrafo">Verifica que el SCR del <b>CDR</b> sea igual que el SCR del <b>CDE</b>, en caso contrario se activa la opcion de <b>"Reproyectar"</b> que genera un nuevo <b>CDR</b> que se guarda en la carpeta del proyecto <b>"CD"</b> con el resultado de la reproyección</p>
+		<h5>Cobertura espacial:</h5> 
+			<p class="parrafo">En el caso de la cartografía de la BTN25, se verifica la existencia del Shape <b>"MAR_HOJ"</b> en la carpeta de donde el usuario ha tomado los <b>CDE</b>, si este archivo no es encontrado se genera la cobertura con la extensión máxima de los <b>CDE</b> cargados, igualmente se genera la cobertura con la extensión máxima de los <b>CDR</b>, se registra el area de ambas coberturas y se estima el procentaje de cobertura compartida. Si no tienen cobertura compartida se pide al usuario que modifique los <b>CDR</b>.</p>
+		<h5>Topología:</h5> 
+			<p class="parrafo">El plugin solo permite realizar la evaluación de calidad entre conjunto de datos de igual topología (punto-punto, linea-linea o polígono-polígono), en caso que se detecte que no corresponden al mismo tipo, de indica al usuario que debe eliminar el conjunto de datos o modificarlo para que se cumpla la condición.
+		<h5>Continuar:</h5> 
+			<p class="parrafo">Esta opción se activa una vez se cumpla el proceso de validación</p>
+
+		<a name="elementos"></a>
+		<h4>Elementos de calidad:</h4><br>
+		<p><img src="imagen/elementos.jpg" alt="Elementos de calidad" width="50%" /></p>
+		<p>Se presentan los <b>CDE</b> cargados y se permite al usuario habilitar o deshabilitar los elementos de calidad a evaluar en cada conjunto de datos, en caso que el <b>CDE</b> no tenga un <b>CDR</b> asociado solo permitirá la evaluacion de la consistencia lógica, la calidad temporal y la usabilidad.</p><br>
+		<h5>Iniciar:</h5> 
+			<p class="parrafo">Una vez el usuario habilite los elementos de calidad a evaluar se puede iniciar con el proceso en la pestaña de <b>Evaluación</b></p><br>
+
+		<a name="norma"></a>
+		<h3>Norma ISO 19157</h3>
+		<p>La evaluación de calidad del plugin esta basada en los parametros y medidas establecidos por la norma internacional <b>ISO 19157</b> que se centra en lo que se denomina elementos cuantitativos de la calidad de los datos espaciales, es decir, aquellos que se pueden expresar de una forma numérica, se organiza en los siguientes elementos de calidad de los datos:</p><br>
+		<ul>
+		<li><b><a href="#complesion">Compleción:</b></a> Elemento de calidad que exige que los objetos o elementos definidos en las especificaciones o en el modelo de datos, se encuentren presentes comparando la cantidad de estos elementos con una base de datos de referencia. Los subelementos a evaluar son:<br>
+			<ul><br>	
+			<li><u>Comisión:</u> Evalúa si el número de elementos de un conjunto de datos excedan el número de elementos de la base de datos de referencia.</li><br> 
+			<li><u>Omisión:</u> Evalúa si el número de elementos de un conjunto de datos falten en comparación con la base de datos de referencia.</li></ul></li><br> 
+		
+		<li><b><a href="#logica">Consistencia Lógica:</a></b> Permite la evaluación de la calidad verificando su estructura interna en relación al grado de adherencia a las reglas lógicas de los datos, en relación a sus atributos y relaciones especificas en los términos del producto. Los subelementos a evaluar son:<br>
+			<ul><br>	
+			<li><u>Consistencia de formato:</u> Se verifican las características de almacenamiento del conjunto de datos y que deben cumplir con las definidas en las especificaciones del producto, por ejemplo, si se establece que los datos son tipo vector deben cumplir dicha estructura.</li><br>
+			<li><u>Consistencia conceptual:</u> Se verifica el cumplimiento de los datos geográficos en relación al modelo que define conceptos de un universo de discurso . Se pueden evaluar como un indicador conjunto de la consistencia de dominio y de la consistencia topológica.</li><br>
+			<li><u>Consistencia de dominio:</u> Se verifica que los objetos y sus atributos estén dentro del rango estipulado en las especificaciones del producto. Por ejemplo, que las curvas de nivel se representen en la equidistancia definida que el rango de las cotas pertenezcan a la lógica del área representada.</li><br>
+			<li><u>Consistencia Topológica:</u> Se verifica que los objetos cumplan con las reglas cualitativas de la relación con ellos mismos y los demás objetos, como son la conectividad, la proximidad, la dirección, la geometría, reglas que pueden definir la estructuración de la información, por ejemplo, que los ríos están conectados correctamente en los afluentes aguas abajo.</li></ul></li><br>
+		
+		<li><b><a href="#posicional">Exactitud Posicional:</b></a> Permite la evaluación de las coordenadas X,Y y/o Z de los objetos en relación entre ellos mismos o en comparación de su posición en una referencia de mayor exactitud y que se encuentre en el mismo sistema de coordenadas. Los subelementos a evaluar son:<br>
+			<ul><br>
+			<li><u>Exactitud absoluta o externa:</u> se refiere a la exactitud de las coordenadas X,Y y/o Z en comparación con una referencia de mayor exactitud, donde se recomienda que por lo general sean datos 3 veces de mayor exactitud, es decir mayor proximidad entre los datos medidos y los valores verdaderos, lo que implica menores discrepancias y por tanto menor incertidumbre, por ejemplo, una cartografía obtenida a partir de imágenes de ortofotografías con una resolución espacial de 0.2 m se podría comparar con métodos geodésicos de alta precisión.</li><br>
+			<li><u>Exactitud relativa o interna:</u> Se refiere a la relación o proximidad de las posiciones relativas, se puede considerar en este las diferencias de las distancias calculadas en el conjunto de datos evaluado y las distancias correspondientes en el producto considerado como verdad (conjunto de datos de referencia).</li><br>
+			<li><u>Exactitud de posición de datos de celdas:</u> Al referirse a datos ráster, esta medida está sujeta a la resolución espacial del conjunto de datos, no aplicable a los datos de BTN25 de este trabajo.</li></ul></li><br>
+		
+		<li><b><a href="#temporal">Consistencia Temporal</b></a> Exactitud de los atributos temporales y de las relaciones temporales de los objetos . Los subelementos a evaluar son:<br> 
+			<ul><br>
+			<li><u>Exactitud de medida de tiempo:</u> Corrección de las referencias temporales.</li><br>
+			<li><u>Consistencia temporal:</u> Corrección de eventos ordenados o secuencias</li><br>
+			<li><u>Validez temporal:</u> Validez de los datos con respecto al tiempo.</li></ul></li><br>
+
+		<li><b><a href="#tematica">Exactitud Temática</b></a> Se evalúa la fiabilidad de la clasificación, las relaciones y los atributos de los objetos en comparación con una referencia que se considera verdadera. Los subelementos a evaluar son:<br>
+			<ul><br>
+			<li><u>Corrección de la clasificación:</u> Se evalúa la clasificación representada en el conjunto de datos en relación a una referencia considerada verdadera.</li><br> 
+			<li><u>Corrección de atributo no cuantitativo:</u> Diferencia de los valores dados a los atributos cualitativos respecto al conjunto de datos de referencia considerada verdadera</li><br> 
+			<li><u>Corrección de atributo cuantitativo:</u> Diferencia entre los valores dados a los atributos cuantitativos con respecto al conjunto de datos de referencia considerada verdadera.</li></ul></li><br>
+
+		<li><b><a href="#usabilidad">Medidas de agregación</b></a> Se evalúan varios requisitos para el producto para que sea conforme con las especificaciones indicadas por el mismo producto, se puede basar en la combinación de los elementos de calidad antes indicados, se describe en el subelemento de <b>usabilidad</b>.</li></ul><br>
+
+		<a name="evaluacion"></a>
+		<h3>Evaluación de calidad</h3>
+		<p>El plugin implementa la norma <b>ISO 19157</b> tomando como referencia las medidas y métodos normalizados para cada uno de los elementos y subelementos de calidad, se recomienda seguir el orden de evaluación establecido por la norma ISO 19157 anexo I 2.3.</p><br>
+
+		<p> Para desarrollar el proceso de evaluación de calidad, se guien los pasos indicados por la norma ISO 19157 anexo E.3:</p><br>
+		<ol>
+		<li><u>Especificar las unidades de calidad de datos</u>: El plugin en el menu <a href="#elementos"><b>elementos de calidad</b></a> permite que el usuario especifique las unidades de calidad de datos que evaluará para cada objeto geográfico, esta selección debe estar asociada al tipo de objeto geográfico y a los requerimientos del usuario.</li><br>
+		<li><u>Especificar las medidad de calidad</u>: El plugin desarrolla las medidas de calidad indicadas en la norma ISO 19157 anexo D para cada una de las unidades de calidad seleccionadas por el usuario, no existe filtro previo, dado que se reportan los resultados para todas mas medidas.</li><br>
+		<li><u>Especificar los procedimientos</u>:  La norma ISO 19157 determina diferentes métodos de evaluación de calidad de datos:<br>
+		<center><img src="imagen/metodo.jpg" width="500px"></center><br>
+		<p class="parrafo">El método de evaluación <b>directa</b> se basa en la inspección de los ítems del conjunto de datos, puede clasificarse en interna y externa, el método de evaluación <b>directa interna</b> utiliza solo datos que se encuentran en el propio conjunto de datos que se esta evaluando, la evaluacion <b>directa externa</b> requiere un conjunto de datos externa independientes al conjunto de datos evaluados.<br>
+		El método de evaluacion <b>indirecta</b> esta basado en el conocimiento y la experiencia externa sobre el conjunto de datos evaluado, puede ser subjetivo y pueden considerarse el linaje, el productor y el proposito del conjunto de datos.<br><br>
+		El plugin desarrolla diferentes enfoques de inspección para la obtención de la información en el método de evaluación directa:<br>
+		<center><img src="imagen/directa.jpg" width="500px"></center><br>
+
+		El resultado de evaluación de calidad reportado en el plugin incluye el método de evaluación para cada elemento de calidad y el enfoque de inspección.</p></li><br>     
+		<li><u>Determinar la salida de la evaluación de la calidad de datos</u>: EL plugin realiza un informe de calidad independiente, de las medidas de calidad, los procedimientos y los métodos empleados</li><br>
+
+		<a name="logica"></a>
+		<h4>Consistencia lógica:</h4> 
+		<p class="parrafo">Este elemento de calidad requiere solo los CDE, se verifica la consistencia lógica del 100% de la cobertura de los datos y la evaluación se establece con las características indicadas en las <a href="http://centrodedescargas.cnig.es/CentroDescargas/documentos/BTN25_documentacion.zip">especificaciones de la BTN25.</a> de donde se obtiene el <a href="#catalogo">catálogo de objetos</a></p>
+		<p class="parrafo">Para el desarrollo de este modulo se sigue el siguiente esquema:</p>
+		<p class="parrafo"><a href= "imagen/logica.jpeg" target="_blank" onclick="afoto('imagen/logica.jpeg','Esquema de desarrollo');return false" > 
+			<img src="imagen/logica.jpeg" alt="Esquema de desarrollo" width="50%" /></a></p><br>
+		<p class="parrafo">(continuación) Para los CDE tipo <b>linea</b> los procesos implementados son:</p>
+		<p class="parrafo"><a href= "imagen/logica_l.jpg" target="_blank" onclick="afoto('imagen/logica_l.jpg','Esquema de desarrollo');return false" > 
+			<img src="imagen/logica_l.jpg" alt="Esquema de desarrollo" width="50%" /></a></p><br>
+		<p class="parrafo">(continuación) Para los CDE tipo <b>polígono</b> los procesos implementados son:</p>
+		<p class="parrafo"><a href= "imagen/logica_p.jpg" target="_blank" onclick="afoto('imagen/logica_p.jpg','Esquema de desarrollo');return false" > 
+			<img src="imagen/logica_p.jpg" alt="Esquema de desarrollo" width="50%" /></a></p><br>
+
+		<a name="catalogo"></a>	
+		<p class="parrafo"><b>Catálogo de objetos:</b> Fichero en formato plano (txt) donde se relacionan los objetos representados en el CDE, describiendo su nombre, atributos, dominio y tipo de datos, se encuentra cargado en el plugin de manera predeterminada el catálogo de objetos de para la BTN25 con la estructura.</p>
+		<p class="parrafo"><img src="imagen/catalogo.jpg" alt="Catálogo de objetos" width="50%" /></p>
+		<p class="parrafo">Los usuarios pueden generar el catálogo de objetos personalizado, solo deben cumplir con la siguiente estructura:</p><br>
+		<p class="parrafo">Fichero plano, con extensión "txt", separado por comas ",".</p>
+		<p class="parrafo">Encabezado <b>"CODIGO,NOMBRE,TABLA,ATRIBUTO,DOMINIO,TIPO"</b>
+		<p class="parrafo">Donde:</p>
+		<p class="parrafo"><b>Codigo:</b> Caracteres alfanumericos que representan el CDE.</p>
+		<p class="parrafo"><b>Nombre:</b> Nombre del CDE segun las especificaciones.</p>
+		<p class="parrafo"><b>Tabla:</b> Nombre de la tabla del CDE</p>
+		<p class="parrafo"><b>Atributo:</b> Nombre del campo del CDE</p>
+		<p class="parrafo"><b>Dominio:</b> Valores que puede tomar el atributo, se escriben separados por "-", esta caracteristica puede ser nula, en ese caso se deja sin asignar.</p>
+		<p class="parrafo"><b>Tipo:</b> Tipo de dato en el que se encuentra almacenado el atributo (campo) segun las especificaciones, debe asignarse uno de estos 3 tipos (String, Integer, Real). Si se define un atributo debe tener un tipo asignado.</p><br>
+		<p class="parrafo">Cuando se tenga el fichero debe ser almacenado en la localización del plugin (por defecto  C:\Users\_________\AppData\Roaming\QGIS\QGIS3\profiles\default\python\plugins\iso_19157) en la carpeta "Datos".</p><br>
+		<p class="parrafo"><b>No</b> remueva este fichero de la ubicación dado que afecta el comportamiento del plugin</p>
+		<p class="parrafo">Puede modificar el fichero, respetando los parametros antes indicados</p><br>
+		<p class="parrafo"><b>Resultados:</b></p> 
+		<p class="parrafo">La evaluación de la consistencia lógica genera para cada CDE, una capa de puntos con la representación de los errores encontrados, se emplea la siguiente simbologia</p>
+		<center>
+		<table class="tabla"><tr><th>Característica</th><th>Simbología</th></tr>
+			<tr><td>Contornos internos consistentes (poligonos)</td><td>&#11046;</td></tr>
+			<tr><td>Ordenación de los vertices (capa rios)</td><td>&#10032;</td></tr>
+			<tr><td>Pt/Vert Duplicados (puntos, lineas y poliginos)</td><td>&#9723; - &#128710;</td></tr>
+			<tr><td>Puntos Superfluos (lineas y poligonos)</td><td>O</td></tr>
+			<tr><td>Bucles (lineas y poligonos)</td><td>X</td></tr>
+			<tr><td>Elementos unificados (lineas)</td><td>&#9475;</td></tr>
+			<tr><td>Cruces y anclajes en exceso (lineas y poligonos)</td><td>&#9547;</td></tr>
+			<tr><td>Anclajes por defecto (lineas)</td><td>></td></tr></table></center><br>
+		<p class="parrafo">Para las características "Entidades atributos duplicados", "Elementos solapados (lineas)" y "Contornos disjuntos (poligonos)", se crean capas adicionales</p>
+		<p class="parrafo">Las medidas y métodos de la Norma ISO 19157 (anexo D) implementadas son:</p>
+		<center>
+		<table class="tabla"><tr><th>Medida</th><th>Anexo D</th><th>Tipo</th><th>Descripción</th></tr>
+			<tr><td>4</td><td>Tabla_D.4</td><td>Entero</td><td style="text-align: justify;">Número total de duplicaciones exactas de instancias de objetos geográficos en el conjunto de datos</td>
+			</tr><tr><td>9</td><td>Tabla_D.9</td><td>Booleano</td><td style="text-align: justify;">Verdadero indica que un item cumple las reglas del esquema conceptual</td></tr>
+			<tr><td>10</td><td>Tabla_D.10</td><td>Entero</td><td style="text-align: justify;">Recuento de todos los ítem del conjunto de datos que no cumplen las reglas del esquema conceptual</td></tr>
+			<tr><td>11</td><td>Tabla_D.11</td><td>Entero</td><td style="text-align: justify;">Número total de superposiciones erróneas en los datos</td></tr>
+			<tr><td>12</td><td>Tabla_D.12</td><td>Real</td><td style="text-align: justify;">Número de items del conjunto de datos que no cumplen las reglas del esquema conceptual en relación al supuesto número total de estos ítems en el conjunto de datos</td></tr>
+			<tr><td>15</td><td>Tabla_D.15</td><td>Booleano</td><td style="text-align: justify;">Verdadero indica que un ítem no es conforme con su dominio de valores</td></tr>
+			<tr><td>16</td><td>Tabla_D.16</td><td>Entero</td><td style="text-align: justify;">Recuento de todos los ítem del conjunto de datos que no son conformes con su dominio de valores</td></tr>
+			<tr><td>18</td><td>Tabla_D.18</td><td>Real</td><td style="text-align: justify;">Número de datos que no son conformes con su dominio de valores en relación al número total de ítem</td></tr>
+			<tr><td>119</td><td>Tabla_D.19</td><td>Booleano</td><td style="text-align: justify;">Verdadero indica conflicto en la estructura física</td></tr>
+			<tr><td>19</td><td>Tabla_D.20</td><td>Entero</td><td style="text-align: justify;">Recuento de todos los ítem del conjunto de datos que están almacenados en conflicto con la estructura física del conjunto de datos</td></tr>
+			<tr><td>20</td><td>Tabla_D.21</td><td>Real</td><td style="text-align: justify;">Número de ítems de datos que están almacenados en conflicto con la estructura física del conjunto de datos, dividido entre el número total de ítems</td></tr>
+			<tr><td>23</td><td>Tabla_D.24</td><td>Entero</td><td style="text-align: justify;">Recuento de ítems del conjunto de datos, dentro del <b>parámetro de la tolerancia*</b>, que no se han combinado debido a subtrazos.</td></tr>
+			<tr><td>24</td><td>Tabla_D.25</td><td>Entero</td><td style="text-align: justify;">Recuento de ítems del conjunto de datos, dentro del <b>parámetro de la tolerancia*</b>, que no se han combinado debido a sobretrazos.</td></tr>
+			<tr><td>26</td><td>Tabla_D.27</td><td>Entero</td><td style="text-align: justify;">Recuento de todos los ítems de los datos que ilegalmente se intersectan con ellos mismos.</td></tr>
+			<tr><td>27</td><td>Tabla_D.28</td><td>Entero</td><td style="text-align: justify;">Recuento de todos los ítems de los datos que ilegalmente se autosuperponen con ellos mismos</td></tr>
+			</table><p class="pie" style="text-align: center;"><em>Tomado de la Norma ISO 19157</em></p></center><br>
+
+		<p class="parrafo">Las especificaciones de la BTN25, adicionalmente indica que se deben valorar:</p>
+		<ul>
+			<li>- Puntos o vertices duplicados.</li>
+			<li>- Puntos superfluos</li>
+			<li>- Elementos unificados</li>
+		</ul><br>
+		<p class="parrafo">* <b>Parámetro de tolerancia</b> para la evaluación de la consistencia lógica, se define el parámetro de tolerancia mediante el <b>limite de percepción visual</b>, índice que asume el límite de percepción del ojo humano, para una vista normal entre 0,25 mm, con un error no superior al 0,2 mm, para la observación en condiciones normales, dado que en el proceso de medición de productos cartográficos se requiere dedicación y un gran numero de lecturas, se puede incrementar el valor de percepción normal, en un porcentaje de relajación <b>(Pr)</b>, que el usuario define teniendo en cuenta las condiciones externas (ARIZA F), esto permite aumentar el valor de percepción visual debido a la fatiga que se pueda presentar dado que el proceso de medición debe ser continuo.</p>
+		<p class="parrafo">Uno de los valores utilizados para <b>Pr</b> es el 25%, considerando un muestreo continuo de 20 a 30 mediciones continuas, por tanto la tolerancia para el límite de percepción visual esta determinado por:</p>
+		<p><center><b>Tolerancia (metros) = (0,0002 ) . (Pr) . (Me)</b></center></p>
+		<p class="parrafo">Donde: <b>Me</b> es el modulo de la escala del producto cartográfico.</p><br>  
+		<p class="parrafo">En el caso de la <b>BTN25</b> el limite de percepción visual seria:</p>
+		<p><center><b>Tolerancia (metros) = 0,0002 x 1,25 x 25.000 = 6,25 m</b></center></p> 
+
+		<a name="complesion"></a>
+		<h4>Complesión:</h4> 
+		<p class="parrafo">Este elemento de calidad requiere que los <b>CDE</b> tengan asociado con un <b>CDR</b>.<br>
+		<p class="parrafo">Para el desarrollo de este modulo se sigue el siguiente esquema:</p>
+		<p class="parrafo"><a href= "imagen/complesion.jpg" target="_blank" onclick="afoto('imagen/complesion.jpg','Esquema de desarrollo');return false" > 
+			<img src="imagen/complesion.jpg" alt="Esquema de desarrollo" width="50%" /></a></p><br>
+
+		<p class="parrafo"><b>Extensión espacial de la evaluación:</b> El usuario debe definir el area de evaluación, el plugin presenta 3 opciones:
+		<ul>
+			<li><u>Cobertura compartida:</u> Area común entre la extensión de los CDE y la extensión de la CDR</li>
+			<li><u>Extensión CDE:</u></li>
+			<li><u>Extensión CDR:</u></li>
+		</ul><br>
+		<p class="parrafo">El plugin permite comparar el CDE, con todas las entidades del CDR o realizar un filtro del CDR mediante un valor de atributo específico. Este parámetro debe ser definido por el usuario para cada uno de los CDE a evaluar.</p><br>
+
+		<p class="parrafo"><b>Resultados:</b></p>
+		<p class="parrafo">Las medidas y métodos de la Norma ISO 19157 (anexo D) implementadas son:</p>
+		<center>
+		<table class="tabla"><tr><th>Medida</th><th>Anexo D</th><th>Tipo</th><th>Descripción</th></tr>
+			<tr><td>1</td><td>Tabla_D.1</td><td>Booleano</td><td style="text-align: justify;">Verdadero indica que el ítem es excedente</td>
+			</tr><tr><td>2</td><td>Tabla_D.2</td><td>Entero</td><td style="text-align: justify;">Número de ítems del conjunto o muestra de datos que no deberian haber estado presentes</td></tr>
+			<tr><td>3</td><td>Tabla_D.3</td><td>Real</td><td style="text-align: justify;">Número de ítems excedentes en el conjunto o muestra de datos en relación al número de ítems que deberían haber estado presentes</td></tr>
+			<tr><td>5</td><td>Tabla_D.5</td><td>Booleano</td><td style="text-align: justify;">Verdadero indica que el ítem es omitido</td>
+			</tr><tr><td>6</td><td>Tabla_D.6</td><td>Entero</td><td style="text-align: justify;">Recuento de todos los ítems que deberían haber estado ene el conjunto o muestra de datos y estan omitidos</td></tr>
+			<tr><td>7</td><td>Tabla_D.7</td><td>Real</td><td style="text-align: justify;">Número de ítems omitidos en el conjunto o muestra de datos en relación al número de ítems que deberían haber estado presentes</td></tr>
+			</table><p class="pie" style="text-align: center;"><em>Tomado de la Norma ISO 19157</em></p></center><br>   
+
+		<a name="posicional"></a>
+		<h4>Exactitud posicional:</h4> 
+		<p class="parrafo">Este elemento de calidad requiere que los <b>CDE</b> tengan asociado con un <b>CDR</b>.<br>
+		<p class="parrafo">Para el desarrollo de este modulo se sigue el siguiente esquema:</p>
+		<p class="parrafo"><a href= "imagen/posicional.jpg" target="_blank" onclick="afoto('imagen/posicional.jpg','Esquema de desarrollo');return false" > 
+			<img src="imagen/posicional.jpg" alt="Esquema de desarrollo" width="50%" /></a></p><br>
+		<p class="parrafo"><b>Extensión espacial de la evaluación:</b> El usuario debe definir el area de evaluación, el plugin presenta 3 opciones:
+		<ul>
+			<li><u>Cobertura compartida:</u> Area común entre la extensión de los CDE y la extensión de la CDR</li>
+			<li><u>Extensión CDE:</u></li>
+			<li><u>Extensión CDR:</u></li>
+		</ul><br>
+		<p class="parrafo">El plugin solicita al usuario ingrese el número de puntos a muestrear, como minimo se deben indicar 25 y un máximo de 500 puntos.</p><br>
+		<p class="parrafo">El usuario debe indicar la escala del CD, para calcular las tolerancias, siguiendo los siguientes parámetros:</p><br>
+
+		<p class="parrafo"><b>Parámetro de tolerancia:</b> (metros)</p>
+		<p class="parrafo"><u>limite de percepción visual:</u> índice que asume el límite de percepción del ojo humano, para una vista normal entre 0,25 mm, con un error no superior al 0,2 mm, para la observación en condiciones normales, dado que en el proceso de medición de productos cartográficos se requiere dedicación y un gran numero de lecturas, se puede incrementar el valor de percepción normal, en un porcentaje de relajación <b>(Pr)</b>, que el usuario define teniendo en cuenta las condiciones externas (ARIZA F), esto permite aumentar el valor de percepción visual debido a la fatiga que se pueda presentar dado que el proceso de medición debe ser continuo.</p>
+		<p class="parrafo">Uno de los valores utilizados para <b>Pr</b> es el 25%, considerando un muestreo continuo de 20 a 30 mediciones continuas, por tanto la tolerancia para el límite de percepción visual esta determinado por:</p>
+		<p><center><em><b>Tolerancia (metros) = (0,0002 ) . (Pr) . (Me)</b></em></center></p><br>
+		<p class="parrafo"><u>Error posicionamiento de contornos - EPC:</u> Se basa en la capacidad de posicionar o adquirir información de un producto cartográfico, dadas las características del terreno representado, valorando la incertidumbre en el desplazamiento de un punto debido a la escala de representación. Se utiliza el <b>EPC</b> para determinar la precisión en la medición sobre cartografía, teniendo en cuenta la escala de entrega o para calcular la escala de impresión para “disimular” el desplazamiento del punto representado o las coordenadas dadas. Se utiliza un valor de ponderación de acuerdo al tipo de terreno, denominado <b>Error de contorno – Ec</b>, los valores usuales son: <b>0.0005</b> metros para zonas planas y <b>0.0007</b> para zonas quebradas o de alta pendiente. La expresión para calcular <b>EPC</b> será:</p>
+		<p><center><em><b>EPC = Ec . Me</b></em></center></br>
+		<p class="parrafo"><u>Estándar de precisión para datos geoespaciales digitales (ASPRS):</u> El objetivo del estándar de precisión ASPRS para datos geoespaciales digitales reemplazan los estandares existentes para grandes mapas 1990 y las directrices ASPRS, para la precisión vertical Lidar Data 2004, con el nuevo estándar de precisión se aborda mejor la tecnología digital.<br>
+		El estandar ASPRS aplicado para la precisión horizontal para mapas planimétricos es aplicable a cualquier escala cartográfica, la implementación se organiza en clases (I, II, III, ... N), donde el RMSE en X o Y (cm) = 0.0125 veces el factor de escala.<br></p>
+		<p><center><em>RMSEx o RMSEy = ((Clase) x 0.0125 x (Modulo de la escala))</em><br><br>
+		<h6><em>(RMSEx / 100)   (RMSEy / 100) </em> para indicar la medida en metros</h6><br><br>
+		<img src="imagen/ec69.jpg" width="260px" /><br><br>
+		<em>Precisión Horizontal (radial) al 95% confianza = RMSEr x 1.7308</em><br><br>	
+		</center></p>
+		<p class="parrafo"><u>Tolerancia del usuario: </u> Se basa en la experiencia del usuario y el conocimiento que tenga de la cartografía evaluada</p><br>
+
+		<a name="groseros"></a>
+		<p class="parrafo"><b>Detección de errores groseros (Outliers):</b></p>
+		<p class="parrafo">Se pude detectar la presencia de errores groseros aplicando test estadísticos sobre el residual <b>(R)</b>, donde se determina un potencial error grosero se presentan cuando <b>R</b> es mayor que el valor que se calcula de la desvición estandar de las observaciones multiplicado por un factor (M), que depende del tamaño de la muestra. Se puede calcular para 1 dimensión (Test Lineal) o para 2 dimensiones (Test Circular).</p><br>
+		<p class="parrafo"><u>Test Lineal:</u></p>
+		<p class="parrafo" style="text-align: center;">Residual, <b>R</b> = <img src="imagen/ec46.jpg" width="70px" /><br><br>
+		<b>R</b> es un potencial cuando: <img src="imagen/ec47.jpg" width="90px" /><br><br>
+		y para el calculo de  <img src="imagen/ec48.jpg" width="220px" /> donde <em>v = n - 1</em> grados de libertad.</p><br><br>	
+		<p class="parrafo"><u>Test Circular:</u></p>
+		<p class="parrafo" style="text-align: center;">Residual, <b>R</b> = <img src="imagen/ec45.jpg" width="170px" /><br><br>
+		<b>R</b> es un potencial cuando: <img src="imagen/ec49.jpg" width="90px" /><br><br>
+		y para el calculo de  <img src="imagen/ec50.jpg" width="220px" /> donde <em>v = n - 1</em> grados de libertad.</p><br><br>
+
+		<p class="parrafo"><b>Test de significancia del sesgo calculado:</b></p>
+		<p class="parrafo">Para determinar si la presencia de sesgo es significativa, se puede probar contra la distribución <em>t</em>, el sesgo debe considerarse significativo con el nivel de confianza del 90% si el valor cero no se encuentra en el rango definido por: <br>
+		<center><img src="imagen/ec51.jpg" width="230px" /></center><br>
+		<p class="parrafo">donde:</p>
+		<center><img src="imagen/ec52.jpg" width="70px" /></center><br>
+		<p class="parrafo">Se aplica de manera independiente para cada posicion (este, norte, cota):</p><br><br>
+
+		<p class="parrafo"><b>Resultados:</b></p>
+		<p class="parrafo">Las medidas y métodos de la Norma ISO 19157 (anexo D) implementadas son:</p>
+		<center>
+		<table class="tabla"><tr><th>Medida</th><th>Anexo D</th><th>Tipo</th><th>Descripción</th></tr>
+			<tr><td>28</td><td>Tabla_D.29</td><td>Medida</td><td style="text-align: justify;">Valor medio de las incertidumbres posicionales para un conjunto de posiciones donde la incertidumbre posicional se define como la distancia entre la posición medida y la que se considera como verdadera <br><img src="imagen/ec1.jpg" /><br> la media de las incertidumbres posicionales de las posiciones horizontales absolutas o externas se calculan como: <br><img src="imagen/ec2.jpg" /><br> (esta medida de calidad es diferente a la desviación típica).</td></tr>
+			<tr><td>128</td><td>Tabla_D.30</td><td>Medida</td><td style="text-align: justify;">Para un número de puntos <em>(N)</em>, se ofrecen las posiciones medidas como coordenadas <em>x</em><sub><em>mi</em></sub> y <em>y</em><sub><em>mi</em></sub> dependiendo de las dimensiones en las que se mide la posición del puntos. Se considera que un conjunto correspondiente de coordenadas <em>x</em><sub><em>ti</em></sub> y <em>y</em><sub><em>ti</em></sub> representa las posiciones verdaderas. las desviaciones y sesgos se calculan como:<br><img src="imagen/ec3.jpg" /><br> sesgo:<br><img src="imagen/ec4.jpg" /><br><img src="imagen/ec5.jpg" /></td></tr>
+			<tr><td>29</td><td>Tabla_D.31</td><td>Medida</td><td style="text-align: justify;">Para un número de puntos <em>(N)</em>, se ofrecen las posiciones medidas como coordenadas <em>x</em><sub><em>mi</em></sub> y <em>y</em><sub><em>mi</em></sub> dependiendo de las dimensiones en las que se mide la posición del punto. Se considera que un conjunto correspondiente de coordenadas <em>x</em><sub><em>ti</em></sub> y <em>y</em><sub><em>ti</em></sub> representa las posiciones verdaderas. Todas las incertidumbres posicionales por encima de un umbral predefinido <em>e<sub>máx</sub></em> son eliminadas del conjunto. las incertidumbres posicionales se calculan como:<br><img src="imagen/ec6.jpg" /><br> el cálculo de <em>e<sub>i</sub></em> se define en la medida de la calidad "valor medio de las incertidumbres posicionales" en una, dos y tres dimensiones.<br> para el número de errores restantes <em>(N<sub>R</sub>)</em>, la la media de las posiciones horizontales absolutas se calcula como:<br><img src="imagen/ec7.jpg" /><br> </td></tr>
+			<tr><td>30</td><td>Tabla_D.32</td><td>Entero</td><td style="text-align: justify;">
+			Para un número de puntos <em>(N)</em>, se ofrecen las posiciones medidas como coordenadas <em>x</em><sub><em>mi</em></sub> y <em>y</em><sub><em>mi</em></sub> dependiendo de las dimensiones en las que se mide la posición del punto. Se considera que un conjunto correspondiente de coordenadas <em>x</em><sub><em>ti</em></sub> y <em>y</em><sub><em>ti</em></sub> representa las posiciones verdaderas. El cálculo de <em>e<sub>i</sub></em> se define en la medida de calidad "valor medio de las incertidumbres posicionales" en una, dos y tres dimensiones.<br> se considera como error todas las incertidumbres posicionales por encima del umbral predefinido.<br><img src="imagen/ec8.jpg" /></td></tr>
+			<tr><td>31</td><td>Tabla_D.33</td><td>Real</td><td style="text-align: justify;">Para un número de puntos <em>(N)</em>, se ofrecen las posiciones medidas como coordenadas <em>x</em><sub><em>mi</em></sub> y <em>y</em><sub><em>mi</em></sub> dependiendo de las dimensiones en las que se mide la posición del punto. Se considera que un conjunto correspondiente de coordenadas <em>x</em><sub><em>ti</em></sub> y <em>y</em><sub><em>ti</em></sub> representa las posiciones verdaderas. El cálculo de <em>e<sub>i</sub></em> se define en la medida de calidad "valor medio de las incertidumbres posicionales" en una, dos y tres dimensiones.<br> se considera como error todas las incertidumbres posicionales por encima del umbral predefinido.<br><img src="imagen/ec8.jpg" /><br> El número de errores se ofrece en relación al número total de puntos medidos.<br></td></tr>
+			<tr><td>33</td><td>Tabla_D.35</td><td>Medida</td><td style="text-align: justify;">Error lineal probable, LEP (Linear Error probable)<br>LE50 (Ver tabla G.2 de la norma ISO 19157 Anexo G.3.2)</td></tr>
+			<tr><td>34</td><td>Tabla_D.36</td><td>Medida</td><td style="text-align: justify;">Error lineal tpico, SLE (Standard Linear Error)<br>LE68.3 (Ver tabla G.2 de la norma ISO 19157 Anexo G.3.2)</td></tr>
+			<tr><td>35</td><td>Tabla_D.37</td><td>Medida</td><td style="text-align: justify;">Exactitud lineal al 90% de nivel de significación, LMAS (Linear Map Accuracy Standard)<br>LE90 (Ver tabla G.2 de la norma ISO 19157 Anexo G.3.2)</td></tr>
+			<tr><td>36</td><td>Tabla_D.38</td><td>Medida</td><td style="text-align: justify;">Exactitud lineal al 95% de nivel de significación, LMAS (Linear Map Accuracy Standard)<br>LE95 (Ver tabla G.2 de la norma ISO 19157 Anexo G.3.2)</td></tr>
+			<tr><td>37</td><td>Tabla_D.39</td><td>Medida</td><td style="text-align: justify;">Exactitud lineal al 99% de nivel de significación, LMAS (Linear Map Accuracy Standard)<br>LE99 (Ver tabla G.2 de la norma ISO 19157 Anexo G.3.2)</td></tr>
+			<tr><td>38</td><td>Tabla_D.40</td><td>Medida</td><td style="text-align: justify;">Exactitud lineal casi cierto<br>LE99.8 (Ver tabla G.2 de la norma ISO 19157 Anexo G.3.2)</td></tr>
+			<tr><td>39</td><td>Tabla_D.41</td><td>Medida</td><td style="text-align: justify;">Error cuadrático medio, ECM (RMSE, Root Mean Square Error)<br>El valor verdadero de un observable Z se conocen como <em>x<sub>t</sub></em><br> de este modo del estimador<br> <img src="imagen/ec53.jpg" /> <br> se obtiene el error cuadrático medio ECM = <em>&#963;<sub>z</sub></em></td></tr>
+			<tr><td>41</td><td>Tabla_D.43</td><td>Medida</td><td style="text-align: justify;">Error lineal absoluto al 90% de nivel de significación de datos verticales con sesgo (Alternativa 2)<br>Se calcula la comparación de los datos (fuente) y el control (referencia) de la siguiente manera:<br>
+				<ol>
+					<li> 1. Se calcula el error absoluto en la dimensión vertical en cada punto:<br><img src="imagen/ec54.jpg" /> </li>
+					<li> 2. Se calcula el error medio vertical:<br><img src="imagen/ec55.jpg" /> </li>
+					<li> 3. Se calcula la desviación típica de los errores verticales:<br><img src="imagen/ec56.jpg" /> </li>
+					<li> 4. Se calcula el ratio del valor absoluto del error medio entre la desviación típica:<br><img src="imagen/ec57.jpg" /></li>
+					<li> 5. Si ratio > 1,4 entonces se calcula <em>k</em> = 1.2515</li>
+					<li> 6. si ratio <= 1,4 entonces se calcula <em>k</em>, el ratio del sesgo vertical entre la desviación típica de las altitudes, usando un ajuste polinómico cúbico mediante los valores tabulados definidos en <em>Handbook of Tables for Probability and Statistics</em><br><img src="imagen/ec58.jpg" /> </li>
+					<li> 7. Se calcula LE90 para la fuente:<br><img src="imagen/ec59.jpg" /> </li>
+					<li> 8. Se calcula el LE90 absoluto:<br><img src="imagen/ec60.jpg" /> </li>
+				</ol>	
+			</td></tr>
+			<tr><td>42</td><td>Tabla_D.44</td><td>Medida</td><td style="text-align: justify;">Desviación típica circular, error puntual de Helmert, CSE (Circular Standard Error)<br>CE39.4 (Ver tabla G.5 de la norma ISO 19157 Anexo G.3.3)</td></tr>
+			<tr><td>43</td><td>Tabla_D.45</td><td>Medida</td><td style="text-align: justify;">Error circular probable, CEP (Circular Error probable)<br>CE50 (Ver tabla G.5 de la norma ISO 19157 Anexo G.3.3)</td></tr>
+			<tr><td>44</td><td>Tabla_D.46</td><td>Medida</td><td style="text-align: justify;">Error circular estandar, CMAS (Circular Map Accuracy Standard)<br>CE90 (Ver tabla G.5 de la norma ISO 19157 Anexo G.3.3)</td></tr>
+			<tr><td>45</td><td>Tabla_D.47</td><td>Medida</td><td style="text-align: justify;">Exactitud de navegación<br>CE95 (Ver tabla G.5 de la norma ISO 19157 Anexo G.3.3)</td></tr>
+			<tr><td>46</td><td>Tabla_D.48</td><td>Medida</td><td style="text-align: justify;">Error circular casi cierto, CNCE (Circular Near Certainty Error)<br>CE99.8 (Ver tabla G.5 de la norma ISO 19157 Anexo G.3.3)</td></tr>
+			<tr><td>47</td><td>Tabla_D.49</td><td>Medida</td><td style="text-align: justify;">Error cuadrático medio planimétrico, ECMP (RMSEP, Root Mean Square Error of Planimetry)<br>El valor verdadero de las coordenadas observadas <em>X</em> e <em>Y</em> se conocen como <em>x<sub>t</sub></em> y <em>y<sub>t</sub></em><br> de este modo del estimador<br> <img src="imagen/ec14.jpg" /> <br> se obtiene el error cuadrático medio planimétrico ECMP = &#963;</td></tr>
+			<tr><td>48</td><td>Tabla_D.50</td><td>Medida</td><td style="text-align: justify;">Error circular absoluto al 90% de nivel de significación de datos con sesgo (OTAN)<br>Se calcula la comparación de los datos (fuente) y el control (referencia) de la siguiente manera:<br>
+				<ol>
+					<li> 1. Se calcula el error absoluto en la dimensión horizontal en cada punto y en cada coordenada <em>X<sub>t</sub></em> y <em>Y<sub>t</sub></em><br><img src="imagen/ec15.jpg" /> </li>
+					<li> 2. Se calcula el error medio horizontal de cada coordenada<br><img src="imagen/ec16.jpg" /> </li>
+					<li> 3. Se calcula la desviación típica circular de las diferencias que se han medido entre el producto evaluado y la fuente de referencia:<br><img src="imagen/ec17.jpg" /> </li>
+					<li> 4. Se calcula la desviación típica circular de los errores en la fuente de referencia: <em>&#963;<sub>R</sub></em></li>
+					<li> 5. Se calcula la desviación típica circular de los errores en el producto evaluado:<br><img src="imagen/ec18.jpg" /> </li>
+					<li> 6. Se calcula el error circular absoluto al 90% de nivel de confianza de datos con sesgo (CMAS)<br><img src="imagen/ec19.jpg" /> </li>
+				</ol>	
+			</td></tr>
+			<tr><td>49</td><td>Tabla_D.51</td><td>Medida</td><td style="text-align: justify;">Error circular absoluto al 90% de nivel de significación de datos con sesgo (ACE Absolute circular error)<br>Se calcula la comparación de los datos (fuente) y el control (referencia) de la siguiente manera:<br>
+				<ol>
+					<li> 1. Se calcula el error absoluto en la dimensión horizontal en cada punto <br><img src="imagen/ec20.jpg" /> </li>
+					<li> 2. Se calcula el error medio horizontal:<br><img src="imagen/ec21.jpg" /> </li>
+					<li> 3. Se calcula la desviación típica de los errores horizontales:<br><img src="imagen/ec22.jpg" /> </li>
+					<li> 4. Se calcula el ratio del valor absoluto del error medio entre la desviación típica:<br><img src="imagen/ec23.jpg" /></li>
+					<li> 5. Si ratio > 1,4 entonces <em>k</em> = 1,2815</li>
+					<li> 6. Si ratio <= 1,4 entonces se calcula <em>k</em>, el ratio de la media entre la desviación típica, usando un ajuste polinómico cúbico mediante los valores tabulados definidos en <em>Handbook of Tables for Probability and Statistics</em><br><img src="imagen/ec24.jpg" /> </li>
+					<li> 7. Se calcula CE90 para la fuente:<br><img src="imagen/ec25.jpg" /> </li>
+					<li> 8. Se calcula el CE90 absoluto:<br><img src="imagen/ec26.jpg" /> </li>
+				</ol>	
+			</td></tr>
+						<tr><td>52</td><td>Tabla_D.54</td><td>Medida</td><td style="text-align: justify;">Error vertical relativo  Rel LE90<br>Se calcula la comparación de los datos (fuente) y el control (referencia) de la siguiente manera:<br>
+				<ol>
+					<li> 1. Se determinan todas las combinaciones de parejas posibles entre los puntos muestreados: <br>Las combinaciones de parejas será: <img src="imagen/ec61.jpg" /> </li>
+					<li> 2. Se calcula el error vertical en cada punto:<br><img src="imagen/ec62.jpg" /> </li>
+					<li> 3. Se calcula el error relativo vertical para cada combinación de parejas de puntos:<br><img src="imagen/ec63.jpg" /> </li>
+					<li> 4. Se calcula la desviación típica relativa vertical:<br><img src="imagen/ec64.jpg" /></li>
+					<li> 5. se calcula el error vertical relativo pasando el nivel de confianza al 90%<br>Rel LE90 = 1,645.<em>&#956;<sub>Z rel</sub></em>  </li>
+					
+				</ol>	
+			</td></tr>
+					<tr><td>53</td><td>Tabla_D.55</td><td>Medida</td><td style="text-align: justify;">Error horizontal relativo  Rel CE90<br>Se calcula la comparación de los datos (fuente) y el control (referencia) de la siguiente manera:<br>
+				<ol>
+					<li> 1. Se determinan todas las combinaciones de parejas posibles entre los puntos muestreados: <br>Las combinaciones de parejas será: <img src="imagen/ec61.jpg" /> </li>
+					<li> 2. Se calcula el error en las dimensiones <em>X</em> y <em>Y</em> en cada punto:<br><img src="imagen/ec65.jpg" /> </li>
+					<li> 3. Se calcula el error relativo en <em>X</em> y <em>Y</em> para cada combinacion de parejas de puntos:<br><img src="imagen/ec66.jpg" /> </li>
+					<li> 4. Se calcula la desviación típica relativa en cada eje:<br><img src="imagen/ec67.jpg" /></li>
+					<li> 5. se calcula la deviación relativa horizontal<br><img src="imagen/ec68.jpg" /> </li>
+					<li> 6. se calcula el error horizontal relativo pasando el nivel de significación al 90%<br>Rel CE90 = 2,146.<em>&#956;<sub>H rel</sub></em>  </li>
+				</ol>	
+			</td></tr>
+			</table><p class="pie" style="text-align: center;"><em>Tomado de la Norma ISO 19157</em></p><br>
+
+
+			<p style="text-align: center;">Tabla G.2 - Relación entre los cuantiles de la distribución normal y el nivel de significación</p>
+			<table class="tabla"><tr><th>Probabilidad <em>P</em></th><th>Cuantil</th><th>Medida básica</th><th>Nombre</th><th>Tipo de valor</th></tr>
+			<tr><td><em>P = 50%</em></td><td><em>&#956;<sub>50%</sub></em> = 0,6745</td><td><em>&#956;<sub>50%</sub></em>.<em>&#963;<sub>Z</sub></em></td><td>LE50</td><td>Medida</td></tr>
+			<tr><td><em>P = 68,3%</em></td><td><em>&#956;<sub>68,3%</sub></em> = 1</td><td><em>&#956;<sub>68,3%</sub></em>.<em>&#963;<sub>Z</sub></em></td><td>LE68.3</td><td>Medida</td></tr>
+			<tr><td><em>P = 90%</em></td><td><em>&#956;<sub>90%</sub></em> = 1,645</td><td><em>&#956;<sub>90%</sub></em>.<em>&#963;<sub>Z</sub></em></td><td>LE90</td><td>Medida</td></tr>
+			<tr><td><em>P = 95%</em></td><td><em>&#956;<sub>95%</sub></em> = 1,960</td><td><em>&#956;<sub>95%</sub></em>.<em>&#963;<sub>Z</sub></em></td><td>LE95</td><td>Medida</td></tr>
+			<tr><td><em>P = 99%</em></td><td><em>&#956;<sub>99%</sub></em> = 2,576</td><td><em>&#956;<sub>99%</sub></em>.<em>&#963;<sub>Z</sub></em></td><td>LE99</td><td>Medida</td></tr>
+			<tr><td><em>P = 99,8%</em></td><td><em>&#956;<sub>99,8%</sub></em> = 3</td><td><em>&#956;<sub>99,8%</sub></em>.<em>&#963;<sub>Z</sub></em></td><td>LE99.8</td><td>Medida</td></tr>
+			</table></p><p class="pie" style="text-align: center;"><em>Tomado de la Norma ISO 19157</em></p><br>
+
+
+			<p style="text-align: center;">Tabla G.5 - Relación entre la probabilidad <em>P</em> y el radio correspondiente del área circular</p>
+			<table class="tabla"><tr><th>Probabilidad <em>P</em></th><th>Medida básica de la calidad de datos</th><th>Nombre</th><th>Tipo de valor</th></tr>
+			<tr><td><em>P = 39,4%</em></td><td><img src="imagen/ec9.jpg" /></td><td>CE39.4</td><td>Medida</td></tr>
+			<tr><td><em>P = 50%</em></td><td><img src="imagen/ec10.jpg" /></td><td>CE50</td><td>Medida</td></tr>
+			<tr><td><em>P = 90%</em></td><td><img src="imagen/ec11.jpg" /></td><td>CE90</td><td>Medida</td></tr>
+			<tr><td><em>P = 95%</em></td><td><img src="imagen/ec12.jpg" /></td><td>CE95</td><td>Medida</td></tr>
+			<tr><td><em>P = 99,8%</em></td><td><img src="imagen/ec13.jpg" /></td><td>CE99.8</td><td>Medida</td></tr>
+			</table><p class="pie" style="text-align: center;"><em>Tomado de la Norma ISO 19157</em></p></center><br>
+			
+			<p class="parrafo">Se presenta un informe <b>detallado</b> de las medidas de incertidumbre de los puntos muestreados, donde se presentan las coordernadas y las diferencias posicionales para el "error norte" y el "error este"</p>
+
+			<p class="parrafo">Se calculan y visualizan los errores o incertidumbres posicionales, mediante el diferentes estimadores de la estadistica circular</p>
+			   <img src="imagen/circular.jpg" /><br>
+			<p class="parrafo">donde: <br>
+				error norte (<em>Y<sub>f</sub></em> - <em>Y<sub>i</sub></em>) <br>
+				error norte (<em>X<sub>f</sub></em> - <em>X<sub>i</sub></em>)<br>
+				<center><img src="imagen/ec27.jpg" width='330px' /> donde: <em>f</em> = referencia <em>i</em> = evaluado</p></center><br>
+
+			<p class="parrafo"><u>Acimut medio:</u><br><center><img src="imagen/ec28.jpg" width=100px/> donde: <img src="imagen/ec29.jpg" width=250px/></center></p>
+			<p class="parrafo"><u>Modulo medio:</u><br><center><img src="imagen/ec30.jpg" width=70px/> donde: <img src="imagen/ec31.jpg" width=125px/></center></p>
+			<p class="parrafo"><u>Varianza circular:</u><br><center><img src="imagen/ec32.jpg" width=80px/></center></p>
+			<p class="parrafo"><u>Desviación estandar circular:</u><br><center><img src="imagen/ec33.jpg" width=110px/></center></p>
+			<p class="parrafo"><u>Asimetría (skewness o sesgo):</u><br><center><img src="imagen/ec34.jpg" width=150px/> donde: <img src="imagen/ec35.jpg" width=260px/></center></p>
+			<p class="parrafo"><u>Curtosis (o elevación):</u><br><center><img src="imagen/ec36.jpg" width=200px/> donde: <img src="imagen/ec35.jpg" width=260px/></center></p>
+			<p class="parrafo"><u>Dispersión circular:</u><br><center><img src="imagen/ec37.jpg" width=100px/> donde: <img src="imagen/ec44.jpg" width=260px/></center></p> 
+			<p class="parrafo"><u>Desviación estandar angular:</u><br><center><img src="imagen/ec38.jpg" width=220px/></center></p>
+			<p class="parrafo"><u>Desviación angular media (Batschelet, 1981):</u><br><center><img src="imagen/ec39.jpg" width=180px/></center></p>
+			<p class="parrafo"><u>Parámetro Von Mises (aproximaciones):</u><br><center><img src="imagen/ec40.jpg" width=320px/><br><img src="imagen/ec41.jpg" width=350px/><br><img src="imagen/ec42.jpg" width=350px/><br><img src="imagen/ec43.jpg" width=150px/><br></center></p>
+		
+		<a name="temporal"></a>
+		<h4>Calidad temporal:</h4> 
+		<p class="parrafo">Este elemento de calidad se aplica solo sobre el <b>CDE</b><br>
+		<p class="parrafo">Para el desarrollo de este modulo se sigue el siguiente esquema:</p>
+		<p class="parrafo"><a href= "imagen/temporal.jpg" target="_blank" onclick="afoto('imagen/temporal.jpg','Esquema de desarrollo');return false" > 
+			<img src="imagen/temporal.jpg" alt="Esquema de desarrollo" width="50%" /></a></p><br>
+		<p class="parrafo"><b>Resultados:</b></p>
+		<p class="parrafo">Las medidas y métodos de la Norma ISO 19157 (anexo D) implementadas son:</p>
+		<center>
+		<table class="tabla"><tr><th>Medida</th><th>Anexo D</th><th>Tipo</th><th>Descripción</th></tr>
+		<tr><td>54</td><td>Tabla_D.56</td><td>Medida</td><td style="text-align: justify;">Exactitud temporal al 68,3% de nivel de significación<br>LE68.3 (Ver tabla G.5 de la norma ISO 19157 Anexo G.3.2)</td></tr>
+		<tr><td>55</td><td>Tabla_D.57</td><td>Medida</td><td style="text-align: justify;">Exactitud temporal al 50% de nivel de significación<br>LE50 (Ver tabla G.5 de la norma ISO 19157 Anexo G.3.2)</td></tr>
+		<tr><td>56</td><td>Tabla_D.58</td><td>Medida</td><td style="text-align: justify;">Exactitud temporal al 90% de nivel de significación<br>LE90 (Ver tabla G.5 de la norma ISO 19157 Anexo G.3.2)</td></tr>
+		<tr><td>57</td><td>Tabla_D.59</td><td>Medida</td><td style="text-align: justify;">Exactitud temporal al 95% de nivel de significación<br>LE95 (Ver tabla G.5 de la norma ISO 19157 Anexo G.3.2)</td></tr>
+		<tr><td>58</td><td>Tabla_D.60</td><td>Medida</td><td style="text-align: justify;">Exactitud temporal al 99% de nivel de significación<br>LE99 (Ver tabla G.5 de la norma ISO 19157 Anexo G.3.2)</td></tr>
+		<tr><td>59</td><td>Tabla_D.61</td><td>Medida</td><td style="text-align: justify;">Exactitud temporal al 99.8% de nivel de significación<br>LE99.8 (Ver tabla G.5 de la norma ISO 19157 Anexo G.3.2)</td></tr></table><p class="pie" style="text-align: center;"><em>Tomado de la Norma ISO 19157</em></p><br>
+
+			<p style="text-align: center;">Tabla G.2 - Relación entre los cuantiles de la distribución normal y el nivel de significación</p>
+			<table class="tabla"><tr><th>Probabilidad <em>P</em></th><th>Cuantil</th><th>Medida básica</th><th>Nombre</th><th>Tipo de valor</th></tr>
+			<tr><td><em>P = 50%</em></td><td><em>&#956;<sub>50%</sub></em> = 0,6745</td><td><em>&#956;<sub>50%</sub></em>.<em>&#963;<sub>Z</sub></em></td><td>LE50</td><td>Medida</td></tr>
+			<tr><td><em>P = 68,3%</em></td><td><em>&#956;<sub>68,3%</sub></em> = 1</td><td><em>&#956;<sub>68,3%</sub></em>.<em>&#963;<sub>Z</sub></em></td><td>LE68.3</td><td>Medida</td></tr>
+			<tr><td><em>P = 90%</em></td><td><em>&#956;<sub>90%</sub></em> = 1,645</td><td><em>&#956;<sub>90%</sub></em>.<em>&#963;<sub>Z</sub></em></td><td>LE90</td><td>Medida</td></tr>
+			<tr><td><em>P = 95%</em></td><td><em>&#956;<sub>95%</sub></em> = 1,960</td><td><em>&#956;<sub>95%</sub></em>.<em>&#963;<sub>Z</sub></em></td><td>LE95</td><td>Medida</td></tr>
+			<tr><td><em>P = 99%</em></td><td><em>&#956;<sub>99%</sub></em> = 2,576</td><td><em>&#956;<sub>99%</sub></em>.<em>&#963;<sub>Z</sub></em></td><td>LE99</td><td>Medida</td></tr>
+			<tr><td><em>P = 99,8%</em></td><td><em>&#956;<sub>99,8%</sub></em> = 3</td><td><em>&#956;<sub>99,8%</sub></em>.<em>&#963;<sub>Z</sub></em></td><td>LE99.8</td><td>Medida</td></tr>
+			</table><p class="pie" style="text-align: center;"><em>Tomado de la Norma ISO 19157</em></p></center><br>
+
+		<a name="tematica"></a>
+		<h4>Exactitud temática:</h4> 
+
+		<a name="usabilidad"></a>
+		<h4>Usabilidad:</h4> 
+
+    </section>
+
+    <aside>
+       <h4>Contenido</h3>
+       <br>
+       <a href="#resumen">Resumen</a><br>
+       <a href="#descripcion">Descripción del plugin</a><br>
+       <ul>
+       <li><a href="#menu_ini">Menu inicial</a><br></li>
+       <li><a href="#conjunto">Conjunto de datos</a><br></li>
+       <li><a href="#validar">Validar CD</a><br></li>
+       <li><a href="#elementos">Elementos de Calidad</a><br></li>
+   	   </ul>
+   	   <a href="#norma">Norma ISO 19157</a><br>
+   	   <a href="#evaluacion">Evaluación de calidad</a><br>
+   	   <ul>
+       <li><a href="#logica">Consistencia lógica</a><br></li>
+       <li><a href="#complesion">Complesión</a><br></li>
+       <li><a href="#posicional">Exactitud posicional</a><br></li>
+       <li><a href="#temporal">Calidad temporal</a><br></li>
+       <li><a href="#tematica">Exactitud temática</a><br></li>
+       <li><a href="#usabilidad">Usabilidad</a><br></li>
+   	   </ul>
+    </aside>
+
+    <footer>
+        <p style="font-size: x-small;text-align: center;">QGIS Plugin - ISO 19157 - Harold Mercado LLanos</p>
+    </footer>
+
+</body>
+</html>
