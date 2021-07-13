@@ -1072,12 +1072,14 @@ class ISO19157Dialog(QDialog, FORM_CLASS):
         nom_cde_comp = nom_cde.copy()
         capa_cdr_comp = capa_cdr.copy()
         nom_cdr_comp = nom_cdr.copy()
+        lista_key=capa_cdr_comp.keys()
 
         for x in reversed(range(0,len(v_comp))):
             if v_comp[x]==False:      
                 capa_cde_comp.pop(x)
-                nom_cde_comp.pop(x)  
-                capa_cdr_comp.pop(x)
+                nom_cde_comp.pop(x)
+                if x in lista_key:
+                    capa_cdr_comp.pop(x)
                 nom_cdr_comp.pop(x)
 
         self.bt_comp.setStyleSheet("QPushButton {background-color: red;}")
@@ -1114,11 +1116,13 @@ class ISO19157Dialog(QDialog, FORM_CLASS):
         capa_cdr_posi = capa_cdr.copy()
         nom_cdr_posi = nom_cdr.copy()
         lista_cdr_posi = lista_cdr.copy()
+        lista_key=capa_cdr_posi.keys()
 
         for x in reversed(range(0,len(v_posi))):
             if v_posi[x]==False:      
                 capa_cde_posi.pop(x)
-                capa_cdr_posi.pop(x)
+                if x in lista_key:
+                    capa_cdr_posi.pop(x)
                 nom_cde_posi.pop(x)  
                 nom_cdr_posi.pop(x)
                 lista_cde_posi.pop(x)
