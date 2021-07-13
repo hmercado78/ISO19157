@@ -6,13 +6,13 @@
 name=ISO 19157
 qgisMinimumVersion=3.16
 description=Application of the ISO 19157 standard on the BTN25 of the CNIG (Aplicación de la norma ISO 19157 sobre la BTN25 del CNIG)
-version=0.1
+version=0.4
 author=Harold Mercado LLanos
 email=hmercado78@hotmail.com
 
 about=This plugin is developed for the implementation of the ISO 19157 standard, for the evaluation of the quality of geographic data presented in the cartography of the CNIG's BTN25. (Este complemento se desarrolla para la implementación de la norma ISO 19157, para la evaluación de calidad de datos geográficos presentados en la cartografía de la BTN25 del CNIG).
 
-tracker=http://bugs
+tracker=https://github.com/hmercado78/ISO19157/issues
 repository=https://github.com/hmercado78/ISO19157
 # End of mandatory metadata
 
@@ -25,7 +25,7 @@ hasProcessingProvider=no
 # Tags are comma separated with spaces allowed
 tags=ISO,19157,quality,cartography
 
-homepage=http://homepage
+homepage=http://iso19157qgis.hol.es/
 category=Vector
 icon=icon.png
 # experimental flag
@@ -43,5 +43,5 @@ Category of the plugin: Raster, Vector, Database or Web
 # category=
 
 # If the plugin can run on QGIS Server.
-server=False
+server=True
 
